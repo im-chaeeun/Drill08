@@ -25,11 +25,24 @@ class Boy:
 
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+
+class Ball:
+    def __init__(self):
+        self.x, self.y = random.randint(100, 700), 599
+        self.image = load_image('ball21x21.png')
+        # self.image41 = load_image('ball41x41.png')
+    def update(self):
+        self.y-=5
+
+    def draw(self):
+        self.image.clip_draw(21, 0, 21, 21, self.x, self.y)
+
 def reset_world():
     global running
     global grass
     global team
     global world
+    global many_ball
 
     running = True
     world=[]
@@ -39,6 +52,9 @@ def reset_world():
 
     team = [Boy() for i in range(10)]
     world+=team
+
+    many_ball = [Ball for p in range(20)]
+    world+=many_ball
 
 def handle_events():
     global running
@@ -56,6 +72,7 @@ def update_world():
     #     boy.update()
     for o in world:
         o.update()
+
 def render_world():
     clear_canvas()
     # grass.draw()        #  그리는 순서 중요, 먼저 그린게 뒤에 온다!
@@ -63,6 +80,7 @@ def render_world():
     #     boy.draw()
     for o in world:
         o.draw()
+
     update_canvas()
 
 open_canvas()
