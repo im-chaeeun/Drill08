@@ -1,5 +1,5 @@
 from pico2d import *
-
+import random
 
 # Game object class here
 class Grass:    # 클래스의 이름은 대문자로 시작하는 명사로 지음
@@ -15,8 +15,8 @@ class Grass:    # 클래스의 이름은 대문자로 시작하는 명사로 지
 
 class Boy:
     def __init__(self):
-        self.x, self.y = 0, 90
-        self.frame = 0
+        self.x, self.y = random.randint(100, 700), 90
+        self.frame = random.randint(0, 7)
         self.image = load_image('run_animation.png')
 
     def update(self):
@@ -28,11 +28,17 @@ class Boy:
 def reset_world():
     global running
     global grass
-    global boy
+    global team
+    global world
 
     running = True
+    world=[]
+
     grass = Grass()     # 클래스를 이용해 객체를 찍어냄
-    boy = Boy()
+    world.append(grass)
+
+    team = [Boy() for i in range(10)]
+    world+=team
 
 def handle_events():
     global running
@@ -45,13 +51,18 @@ def handle_events():
             running = False
 
 def update_world():
-    grass.update()
-    boy.update()
-    pass
+    # grass.update()
+    # for boy in team:
+    #     boy.update()
+    for o in world:
+        o.update()
 def render_world():
     clear_canvas()
-    grass.draw()        #  그리는 순서 중요, 먼저 그린게 뒤에 온다!
-    boy.draw()
+    # grass.draw()        #  그리는 순서 중요, 먼저 그린게 뒤에 온다!
+    # for boy in team:
+    #     boy.draw()
+    for o in world:
+        o.draw()
     update_canvas()
 
 open_canvas()
